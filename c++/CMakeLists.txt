@@ -6,6 +6,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ---------------------------------------------------------------------------
+# ccache (speeds up incremental builds by caching compiled objects)
+# ---------------------------------------------------------------------------
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    message(STATUS "ccache enabled: ${CCACHE_PROGRAM}")
+endif()
+
+# ---------------------------------------------------------------------------
 # Vivante VIP SDK (ARM NPU driver; headers and .so files from reference tree)
 # ---------------------------------------------------------------------------
 set(VIVANTE_SDK_INCLUDE
@@ -27,22 +36,31 @@ set(OPENCV_LIBDIR  "/usr/lib/arm-linux-gnueabihf" CACHE PATH "OpenCV library dir
 find_package(Eigen3 REQUIRED NO_MODULE)
 
 # ---------------------------------------------------------------------------
-# Main executable (populated from Phase 2 onwards)
+# Core library — all implementation sources except main.cpp (Phase 2+)
 # ---------------------------------------------------------------------------
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE CORE_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+list(FILTER CORE_SOURCES EXCLUDE REGEX ".*[/\\]main\\.cpp$")
 
-if(SOURCES)
-    add_executable(multimodal_detect ${SOURCES})
+if(CORE_SOURCES)
+    add_library(multimodal_core STATIC ${CORE_SOURCES})
 
-    target_include_directories(multimodal_detect PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        "${VIVANTE_SDK_INCLUDE}"
-        "${OPENCV_INCLUDE}"
+    target_include_directories(multimodal_core
+        PUBLIC  "${CMAKE_CURRENT_SOURCE_DIR}/include"
+        PRIVATE "${VIVANTE_SDK_INCLUDE}" "${OPENCV_INCLUDE}"
     )
 
-    target_compile_options(multimodal_detect PRIVATE
-        -Wall -Wextra -fPIC
-    )
+    target_compile_options(multimodal_core PRIVATE -Wall -Wextra -fPIC)
+
+    target_link_libraries(multimodal_core PUBLIC Eigen3::Eigen)
+else()
+    message(STATUS "No source files found in src/ — add sources (Phase 2+) to enable build")
+endif()
+
+# ---------------------------------------------------------------------------
+# Main executable — requires src/main.cpp (added in Phase 6)
+# ---------------------------------------------------------------------------
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
+    add_executable(multimodal_detect "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 
     target_link_directories(multimodal_detect PRIVATE
         "${VIVANTE_SDK_LIBDIR}"
@@ -50,19 +68,19 @@ if(SOURCES)
     )
 
     target_link_libraries(multimodal_detect PRIVATE
-        Eigen3::Eigen
+        multimodal_core
         OpenVX OpenVXU CLC VSC SPIRV_viv GAL ovxlib NNArchPerf ArchModelSw
         opencv_imgproc opencv_core
         pthread m
     )
 else()
-    message(STATUS "No source files found in src/ — add sources (Phase 2+) to enable build target")
+    message(STATUS "src/main.cpp not found — add it (Phase 6) to enable the main executable")
 endif()
 
 # ---------------------------------------------------------------------------
-# Unit tests (added in Phase 7)
+# Unit tests (native build only — ARM cross-compiled binaries cannot run on host)
 # ---------------------------------------------------------------------------
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+if(NOT CMAKE_CROSSCOMPILING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
     enable_testing()
     add_subdirectory(test)
 endif()

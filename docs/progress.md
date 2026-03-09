@@ -69,3 +69,36 @@ Phase 0 ✅ 停止，等待用户确认继续 Phase 1（Docker + CMake）。
 
 ### 下一步
 Phase 1 ✅ 停止，等待用户确认继续 Phase 2（核心数据结构与 I/O）。
+
+---
+
+## Session 4 — 2026-03-09（Phase 2 完成）
+
+### 已完成
+- [x] Phase 2.1：`c++/include/config.h` — 锚框、阈值、类名等全局常量（namespace cfg）
+- [x] Phase 2.2：`c++/include/types.h` — BoundingBox, AceMap, SpectralComponent, HyperspectralCube
+- [x] Phase 2.3：`c++/include/binary_io.h` + `c++/src/binary_io.cpp` — 12/16 字节头部解析，RAII FILE 封装
+- [x] Phase 2.4：`c++/include/spectral_library.h` + `c++/src/spectral_library.cpp` — POSIX opendir 遍历，Eigen RowMajor Map
+- [x] Phase 2.5：`c++/include/hyperspectral_loader.h` + `c++/src/hyperspectral_loader.cpp` — transpose(2,1,0)+reshape w-major 列顺序
+- [x] `c++/test/test_phase2.cpp` — 15 个 GoogleTest 测试全部通过
+- [x] `c++/test/CMakeLists.txt` — 原生 x86 测试构建
+- [x] `c++/CMakeLists.txt` 重构 — multimodal_core 静态库 + ccache 检测
+- [x] `c++/docker/Dockerfile` 优化 — BuildKit apt 缓存 + ccache + ninja-build + libgtest-dev
+- [x] `c++/docker/docker-compose.yml` 优化 — ccache named volume
+- [x] 所有 15 项测试通过（Docker 容器 x86 原生）
+
+### 关键技术发现
+| 发现 | 细节 |
+|------|------|
+| 光谱库实际数量 | tasks.md 记为"5类×21组件"有误；实际 ship=6, aircraft=3, roof=3, car=5, oiltank=4（共21） |
+| 高光谱 w-major 顺序 | Python `transpose(2,1,0)` → [B,W,H]，reshape 后列 j = w*H + h；已通过专项测试验证 |
+| Eigen RowMajor | whitening 矩阵（129×129）必须用 `Eigen::Matrix<double,Dynamic,Dynamic,RowMajor>` 才能正确从二进制映射 |
+
+### Git commits（feature/cpp-port）
+| Commit | Hash | 描述 |
+|--------|------|------|
+| feat(core/phase-2) | TBD | 数据结构、config、binary_io、spectral_library、hyperspectral_loader；15 测试通过 |
+| chore(build): Docker ccache+Ninja优化 | TBD | BuildKit cache + ccache volume + Ninja |
+
+### 下一步
+Phase 2 ✅ 停止，等待用户确认继续 Phase 3（ACE 算法与归一化）。

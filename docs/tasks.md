@@ -46,11 +46,11 @@
 
 | ID | 任务 | 产出文件 | 状态 | 备注 |
 |----|------|----------|------|------|
-| 2.1 | 全局常量（无硬编码值） | `c++/include/config.h` | ⬜ pending | 锚框、阈值、类名等 |
-| 2.2 | 核心数据结构 | `c++/include/types.h` | ⬜ pending | BoundingBox, AceMap, SpectralComponent, HyperspectralCube |
-| 2.3 | .bin 文件 I/O | `c++/include/binary_io.h` + `c++/src/binary_io.cpp` | ⬜ pending | |
-| 2.4 | 光谱库加载器 | `c++/include/spectral_library.h` + `c++/src/spectral_library.cpp` | ⬜ pending | 5类 × 21个光谱组件 |
-| 2.5 | 高光谱数据加载器 | `c++/include/hyperspectral_loader.h` + `c++/src/hyperspectral_loader.cpp` | ⬜ pending | 含 transpose/reshape 操作 |
+| 2.1 | 全局常量（无硬编码值） | `c++/include/config.h` | ✅ done | commit: `feat(core/phase-2)` |
+| 2.2 | 核心数据结构 | `c++/include/types.h` | ✅ done | commit: `feat(core/phase-2)` |
+| 2.3 | .bin 文件 I/O | `c++/include/binary_io.h` + `c++/src/binary_io.cpp` | ✅ done | commit: `feat(core/phase-2)` |
+| 2.4 | 光谱库加载器 | `c++/include/spectral_library.h` + `c++/src/spectral_library.cpp` | ✅ done | 实际: ship=6,aircraft=3,roof=3,car=5,oiltank=4 |
+| 2.5 | 高光谱数据加载器 | `c++/include/hyperspectral_loader.h` + `c++/src/hyperspectral_loader.cpp` | ✅ done | w-major 列顺序验证通过 |
 
 **Git commit**：`feat(core): add data structures, config constants, and binary I/O`
 
@@ -130,14 +130,14 @@
 ```
 Phase 0  [✅✅✅✅] 0.1 doc + 0.2 doc + 0.3 实现 + 0.4 实现  ← 完成
 Phase 1  [✅✅✅✅] Docker + CMake  ← 完成
-Phase 2  [⬜⬜⬜⬜⬜] 数据结构 + I/O
+Phase 2  [✅✅✅✅✅] 数据结构 + I/O  ← 完成
 Phase 3  [⬜⬜] ACE + 归一化
 Phase 4  [⬜⬜⬜] YOLOv5 流水线
 Phase 5  [⬜] 多模态融合
 Phase 6  [⬜⬜] 主流水线
 Phase 7  [⬜⬜⬜⬜⬜] 测试
 
-总进度：8 / 22 任务完成（Phase 0 ✅，Phase 1 ✅）
+总进度：13 / 22 任务完成（Phase 0 ✅，Phase 1 ✅，Phase 2 ✅）
 ```
 
 ---
