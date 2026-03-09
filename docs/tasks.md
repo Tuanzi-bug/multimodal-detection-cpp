@@ -33,10 +33,10 @@
 
 | ID | 任务 | 产出文件 | 状态 | 备注 |
 |----|------|----------|------|------|
-| 1.1 | Dockerfile（ARM 交叉编译环境） | `c++/docker/Dockerfile` | ⬜ pending | Ubuntu 20.04 + arm-gnueabihf-g++ + Eigen + Vivante SDK |
-| 1.2 | CMakeLists.txt（主构建配置） | `c++/CMakeLists.txt` | ⬜ pending | 链接 Vivante + OpenCV 库 |
-| 1.3 | ARM 工具链文件 | `c++/toolchain-arm.cmake` | ⬜ pending | |
-| 1.4 | Docker 构建脚本 | `c++/docker/build.sh` | ⬜ pending | |
+| 1.1 | Dockerfile（ARM 交叉编译环境） | `c++/docker/Dockerfile` | ✅ done | Ubuntu 20.04 + arm-gnueabihf-g++-9 + Eigen3 + OpenCV 4.2 |
+| 1.2 | CMakeLists.txt（主构建配置） | `c++/CMakeLists.txt` | ✅ done | 链接 Vivante + OpenCV 库；cmake --configure 验证通过 |
+| 1.3 | ARM 工具链文件 | `c++/toolchain-arm.cmake` | ✅ done | |
+| 1.4 | Docker 构建脚本 | `c++/docker/build.sh` | ✅ done | |
 
 **Git commit**：`feat(build): add Docker cross-compilation environment and CMake config`
 
@@ -129,7 +129,7 @@
 
 ```
 Phase 0  [✅✅✅✅] 0.1 doc + 0.2 doc + 0.3 实现 + 0.4 实现  ← 完成
-Phase 1  [⬜⬜⬜⬜] Docker + CMake
+Phase 1  [✅✅✅✅] Docker + CMake  ← 完成
 Phase 2  [⬜⬜⬜⬜⬜] 数据结构 + I/O
 Phase 3  [⬜⬜] ACE + 归一化
 Phase 4  [⬜⬜⬜] YOLOv5 流水线
@@ -137,7 +137,7 @@ Phase 5  [⬜] 多模态融合
 Phase 6  [⬜⬜] 主流水线
 Phase 7  [⬜⬜⬜⬜⬜] 测试
 
-总进度：4 / 22 任务完成（Phase 0 ✅）
+总进度：8 / 22 任务完成（Phase 0 ✅，Phase 1 ✅）
 ```
 
 ---

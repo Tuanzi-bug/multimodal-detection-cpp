@@ -49,3 +49,23 @@
 
 ### 下一步
 Phase 0 ✅ 停止，等待用户确认继续 Phase 1（Docker + CMake）。
+
+---
+
+## Session 3 — 2026-03-09（Phase 1 完成）
+
+### 已完成
+- [x] Phase 1.1：`c++/docker/Dockerfile` — Ubuntu 20.04 + arm-gnueabihf-g++-9 + Eigen3 + OpenCV 4.2
+- [x] Phase 1.2：`c++/CMakeLists.txt` — Vivante SDK 路径、OpenCV、Eigen3；cmake -B 验证通过
+- [x] Phase 1.3：`c++/toolchain-arm.cmake` — CMAKE_SYSTEM arm，交叉编译器指定
+- [x] Phase 1.4：`c++/docker/build.sh` — docker build + cmake 一键构建脚本
+- [x] Docker 镜像构建验证：`docker build` 成功；`cmake --configure` 在容器内通过
+- [x] docs/tasks.md 更新（Phase 1 标记 ✅ done）
+
+### Git commits（feature/cpp-port）
+| Commit | Hash | 描述 |
+|--------|------|------|
+| feat(build/phase-1): add Docker cross-compilation environment and CMake config | TBD | Docker + CMake + toolchain |
+
+### 下一步
+Phase 1 ✅ 停止，等待用户确认继续 Phase 2（核心数据结构与 I/O）。
