@@ -16,12 +16,16 @@
 
 | ID | 任务 | 产出文件 | 状态 | 备注 |
 |----|------|----------|------|------|
-| 0.1 | H5 → ONNX 转换方案 | `c++/tools/convert_h5_to_onnx_plan.md` | ⏭️ doc_only | 不实现代码，只写方案 |
-| 0.2 | ONNX → Vivante .nb 量化方案 | `c++/tools/quantize_model_plan.md` | ⏭️ doc_only | 不实现代码，只写方案 |
-| 0.3 | 光谱库 .mat → .bin 转换脚本 | `c++/tools/convert_mat_to_bin.py` | ⬜ pending | 实现代码 |
-| 0.4 | 高光谱图像 .mat → .bin 转换脚本 | `c++/tools/convert_hyimg_to_bin.py` | ⬜ pending | 实现代码 |
+| 0.1 | H5 → ONNX 转换方案 | `c++/tools/convert_h5_to_onnx_plan.md` | ✅ done | commit: `docs(tools/phase-0.1)` |
+| 0.2 | ONNX → Vivante .nb 量化方案 | `c++/tools/quantize_model_plan.md` | ✅ done | commit: `docs(tools/phase-0.2)` |
+| 0.3 | 光谱库 .mat → .bin 转换脚本 | `c++/tools/convert_mat_to_bin.py` | ✅ done | 18 tests passed；21/21 文件转换成功，max_diff=0 |
+| 0.4 | 高光谱图像 .mat → .bin 转换脚本 | `c++/tools/convert_hyimg_to_bin.py` | ✅ done | 19 tests passed；22/22 文件转换成功 |
 
-**Git commit**：`feat(tools): add data conversion scripts and model plan docs`
+**Git commits（各自独立）**：
+- `docs(tools/phase-0.1)`: H5→ONNX 方案文档
+- `docs(tools/phase-0.2)`: 量化方案文档
+- `feat(tools/phase-0.3)`: 光谱库转换脚本（conda env: multimodal-cpp-tools）
+- `feat(tools/phase-0.4)`: 高光谱图像转换脚本（conda env: multimodal-cpp-tools）
 
 ---
 
@@ -124,7 +128,7 @@
 ## 进度总览
 
 ```
-Phase 0  [⬜⬜] 0.3/0.4 实现 + 0.1/0.2 文档
+Phase 0  [✅✅✅✅] 0.1 doc + 0.2 doc + 0.3 实现 + 0.4 实现  ← 完成
 Phase 1  [⬜⬜⬜⬜] Docker + CMake
 Phase 2  [⬜⬜⬜⬜⬜] 数据结构 + I/O
 Phase 3  [⬜⬜] ACE + 归一化
@@ -133,7 +137,7 @@ Phase 5  [⬜] 多模态融合
 Phase 6  [⬜⬜] 主流水线
 Phase 7  [⬜⬜⬜⬜⬜] 测试
 
-总进度：0 / 22 任务完成
+总进度：4 / 22 任务完成（Phase 0 ✅）
 ```
 
 ---
