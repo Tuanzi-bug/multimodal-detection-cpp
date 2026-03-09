@@ -31,7 +31,13 @@ model_data/*.pth
 VOCdevkit/VOC2007/JPEGImages/
 hyperspectral/*.mat
 
-# Build artifacts
+# Generated data files (regenerate with c++/tools/ scripts)
+# Use 'python c++/tools/convert_mat_to_bin.py --verify' to recreate
+# Use 'python c++/tools/convert_hyimg_to_bin.py --verify' to recreate
+c++/data/spectral_lib/
+c++/data/hyperspectral/
+
+
 c++/build/
 *.o
 *.a
