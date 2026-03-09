@@ -1,0 +1,12 @@
+services:
+  build:
+    image: multimodal-detect-build
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /workspace
+    volumes:
+      # Mount the entire c++ directory so CMakeLists.txt, src/, include/, test/, reference/ are all accessible
+      - ../:/workspace
+    environment:
+      - MAKEFLAGS=-j4

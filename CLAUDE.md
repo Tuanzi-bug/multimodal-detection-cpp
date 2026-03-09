@@ -91,7 +91,41 @@
 
 ---
 
-## 5. TDD 规范（C++ 阶段）
+## 5. C++ 构建与测试规范（Docker 强制隔离）
+
+**所有 C++ 相关命令（编译、测试、运行）必须在 Docker 容器内执行，严禁污染主机环境。**
+
+### 快速命令（推荐使用 docker-compose）
+
+```bash
+# 进入构建容器（交互式）
+docker compose -f c++/docker/docker-compose.yml run --rm build
+
+# 一键编译
+docker compose -f c++/docker/docker-compose.yml run --rm build bash -c \
+  "cmake -B build -DCMAKE_TOOLCHAIN_FILE=toolchain-arm.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build build --parallel \$(nproc)"
+
+# 运行测试
+docker compose -f c++/docker/docker-compose.yml run --rm build bash -c \
+  "cmake -B build -DCMAKE_TOOLCHAIN_FILE=toolchain-arm.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build build && ctest --test-dir build -V"
+```
+
+### 容器配置
+
+- 镜像：`multimodal-detect-build`（由 `c++/docker/Dockerfile` 构建）
+- docker-compose 文件：`c++/docker/docker-compose.yml`
+- 工作目录挂载：`c++/` → `/workspace`（容器内路径）
+- 构建输出目录：`c++/build/`（宿主机可见）
+
+### 重建镜像
+
+```bash
+docker compose -f c++/docker/docker-compose.yml build
+```
+
+---
+
+## 6. TDD 规范（C++ 阶段）
 
 **对于 C++ 实现阶段（Phase 2-7）：**
 
@@ -109,7 +143,7 @@
 
 ---
 
-## 6. 项目快速参考
+## 7. 项目快速参考
 
 ```
 Python 基准 mAP：
