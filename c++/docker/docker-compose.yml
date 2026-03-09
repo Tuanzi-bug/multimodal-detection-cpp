@@ -6,7 +6,13 @@ services:
       dockerfile: Dockerfile
     working_dir: /workspace
     volumes:
-      # Mount the entire c++ directory so CMakeLists.txt, src/, include/, test/, reference/ are all accessible
+      # Source + build artifacts (cmake incremental builds persist here)
       - ../:/workspace
+      # ccache object cache (persists compiled objects across container restarts)
+      - ccache:/ccache
     environment:
       - MAKEFLAGS=-j4
+      - CCACHE_DIR=/ccache
+
+volumes:
+  ccache:

@@ -101,14 +101,22 @@
 # 进入构建容器（交互式）
 docker compose -f c++/docker/docker-compose.yml run --rm build
 
-# 一键编译
+# ARM 交叉编译（生产构建）
 docker compose -f c++/docker/docker-compose.yml run --rm build bash -c \
-  "cmake -B build -DCMAKE_TOOLCHAIN_FILE=toolchain-arm.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build build --parallel \$(nproc)"
+  "cmake -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE=toolchain-arm.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build build"
 
-# 运行测试
+# 原生单元测试（在 x86 容器内可直接运行）
 docker compose -f c++/docker/docker-compose.yml run --rm build bash -c \
-  "cmake -B build -DCMAKE_TOOLCHAIN_FILE=toolchain-arm.cmake -DCMAKE_BUILD_TYPE=Release && cmake --build build && ctest --test-dir build -V"
+  "cmake -B build_native -G Ninja -DCMAKE_BUILD_TYPE=Release && cmake --build build_native && cd build_native && ctest -V"
 ```
+
+### 优化说明
+
+| 优化 | 效果 |
+|------|------|
+| **ccache** | 编译过的文件二次构建近乎即时；缓存保存在 Docker named volume `ccache` |
+| **Ninja** | 比 Make 快 30-50%，依赖分析更精确 |
+| **BuildKit apt 缓存** | Dockerfile 修改后重建镜像不重复下载已有包 |
 
 ### 容器配置
 
@@ -116,6 +124,7 @@ docker compose -f c++/docker/docker-compose.yml run --rm build bash -c \
 - docker-compose 文件：`c++/docker/docker-compose.yml`
 - 工作目录挂载：`c++/` → `/workspace`（容器内路径）
 - 构建输出目录：`c++/build/`（宿主机可见）
+- ccache 缓存：Docker named volume `ccache`（容器间共享）
 
 ### 重建镜像
 
