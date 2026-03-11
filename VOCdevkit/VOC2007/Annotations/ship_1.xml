@@ -1,0 +1,26 @@
+<annotation>
+	<folder>JPEGImages</folder>
+	<filename>ship_1.jpg</filename>
+	<path>D:\PycharmProjects\yolov5_remote_sense\VOCdevkit\VOC2007\JPEGImages\ship_1.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>150</width>
+		<height>150</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>ship</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>50</xmin>
+			<ymin>44</ymin>
+			<xmax>81</xmax>
+			<ymax>86</ymax>
+		</bndbox>
+	</object>
+</annotation>
