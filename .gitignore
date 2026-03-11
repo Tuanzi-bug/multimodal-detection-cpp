@@ -24,12 +24,16 @@ ENV/
 
 # Model weights (large binary files)
 logs/*.h5
+logs/l_all/
+logs/m_all/
+logs/loss_*/
 model_data/*.h5
 model_data/*.pth
 
 # Dataset images (large)
 VOCdevkit/VOC2007/JPEGImages/
 hyperspectral/*.mat
+spectral_lib/
 
 # Generated data files (regenerate with c++/tools/ scripts)
 # Use 'python c++/tools/convert_mat_to_bin.py --verify' to recreate
@@ -39,6 +43,9 @@ c++/data/hyperspectral/
 
 
 c++/build/
+c++/build_native/
+c++/Testing/
+c++/reference/
 *.o
 *.a
 *.so
@@ -52,6 +59,12 @@ c++/docker/.env
 .vscode/
 *.swp
 *.swo
+
+# Local Claude configuration
+.claude/
+
+# Test output predictions
+test/
 
 # Logs
 map_out/
