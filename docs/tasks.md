@@ -60,8 +60,8 @@
 
 | ID | 任务 | 产出文件 | 状态 | 备注 |
 |----|------|----------|------|------|
-| 3.1 | Min-max 归一化 | `c++/include/normalize.h` + `c++/src/normalize.cpp` | ⬜ pending | 对应 sklearn minmax_scale，含边界情况 |
-| 3.2 | ACE 核心算法 | `c++/include/ace_detector.h` + `c++/src/ace_detector.cpp` | ⬜ pending | Eigen 矩阵运算，含完整流水线 |
+| 3.1 | Min-max 归一化 | `c++/include/normalize.h` + `c++/src/normalize.cpp` | ✅ done | 7 tests passed；边界情况全覆盖（全零/常数非零） |
+| 3.2 | ACE 核心算法 | `c++/include/ace_detector.h` + `c++/src/ace_detector.cpp` | ✅ done | 7 tests passed；detect_component + detect_class；全类别有限值验证 |
 
 **关键陷阱**：Python `transpose(2,1,0)` 顺序 [H,W,B]→[B,W,H]，专项测试验证
 **Git commit**：`feat(ace): implement ACE spectral detection algorithm and normalization`
@@ -131,13 +131,13 @@
 Phase 0  [✅✅✅✅] 0.1 doc + 0.2 doc + 0.3 实现 + 0.4 实现  ← 完成
 Phase 1  [✅✅✅✅] Docker + CMake  ← 完成
 Phase 2  [✅✅✅✅✅] 数据结构 + I/O  ← 完成
-Phase 3  [⬜⬜] ACE + 归一化
+Phase 3  [✅✅] ACE + 归一化  ← 完成
 Phase 4  [⬜⬜⬜] YOLOv5 流水线
 Phase 5  [⬜] 多模态融合
 Phase 6  [⬜⬜] 主流水线
 Phase 7  [⬜⬜⬜⬜⬜] 测试
 
-总进度：13 / 22 任务完成（Phase 0 ✅，Phase 1 ✅，Phase 2 ✅）
+总进度：15 / 22 任务完成（Phase 0 ✅，Phase 1 ✅，Phase 2 ✅，Phase 3 ✅）
 ```
 
 ---

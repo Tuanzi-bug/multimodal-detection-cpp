@@ -102,3 +102,36 @@ Phase 1 ✅ 停止，等待用户确认继续 Phase 2（核心数据结构与 I/
 
 ### 下一步
 Phase 2 ✅ 停止，等待用户确认继续 Phase 3（ACE 算法与归一化）。
+
+---
+
+## Session 5 — 2026-03-11（Phase 3 完成）
+
+### 已完成
+- [x] Phase 3.1：`c++/include/normalize.h` + `c++/src/normalize.cpp`
+  - 列方向 min-max 归一化（对应 Python `normalize(x, 1)`）
+  - 边界情况：全零列保持全零；常数非零列变为全一（Python sklearn override）
+  - 7 个 GoogleTest 测试全部通过
+- [x] Phase 3.2：`c++/include/ace_detector.h` + `c++/src/ace_detector.cpp`
+  - `detect_component`：ACE 算法全流程（中心化→白化→单位化→点积→reshape→min-max 归一化）
+  - `detect_class`：对所有光谱分量取逐像素最大值
+  - 7 个 GoogleTest 测试全部通过（含全类别有限值验证）
+- [x] `c++/test/test_phase3.cpp` — 14 个测试（7 归一化 + 7 ACE）
+- [x] `c++/test/CMakeLists.txt` 更新 — 新增 Phase 3 测试目标
+- [x] 全套测试通过（Phase 2: 15 + Phase 3: 14 = 29 测试，100% PASS）
+- [x] docs/tasks.md 更新（Phase 3 标记 ✅ done）
+
+### 关键技术细节
+| 细节 | 说明 |
+|------|------|
+| ACE reshape 顺序 | Python `confid_temp.reshape((W, H)).T` → C++ `map(h, w) = Y[w*H + h]`（w-major，与 Phase 2 加载顺序一致） |
+| 零范数保护 | 若某像素白化后 L2 范数为 0，则该像素保持全零（避免 NaN） |
+| 归一化时常数图像 | 若 min==max，整个 map 置零（避免 NaN） |
+
+### Git commits
+| Commit | 描述 |
+|--------|------|
+| feat(ace/phase-3) | TBD — normalize + ACE 检测器；14 测试通过 |
+
+### 下一步
+Phase 3 ✅ 停止，等待用户确认继续 Phase 4（YOLOv5 推理流水线）。
