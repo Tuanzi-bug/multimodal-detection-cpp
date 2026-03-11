@@ -1,0 +1,5 @@
+ship
+aircraft
+roof
+car
+oiltank
